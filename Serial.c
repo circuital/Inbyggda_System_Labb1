@@ -24,15 +24,15 @@ void uart_init(void)
 	UBRR0H = (UBRR >> 8);
 	// Kopierar 16bits-värdet UBRR till 8bits-registret UBRR0L, de övre 8 bitarna blir trunkerade, medan de undre 8 bitarna sätts. 
 	UBRR0L = UBRR;
-	//Aktiverar USART för sändning.
-	UCSR0B = (1 << TXEN0);
+	//Aktiverar USART för sändning och mottagning.
+	UCSR0B = (1 << TXEN0) | (1 << RXEN0);
 	//Sätter frame format: 8data, 1 stop bit.
 	UCSR0C = 0b110;
 }
 
 void uart_putchar(char c)
 {
-	//Kollar om tecknet är lika med \r eftersom enter i Putty ger \r och sänder isåfall \n och \r, annars sänds tecknet. 
+	//Kollar om tecknet är lika med \r eftersom Enter i Putty ger \r och sänder isåfall \n och \r, annars sänds tecknet. 
 	if (c == '\r')
 	{
 		//Väntar tills transmitter buffern är tom.
@@ -60,6 +60,20 @@ void uart_putstr(const char* s)
 		i++;
 	}
 	uart_putchar('\r');
+}
+
+char uart_getchar()
+{
+	//Väntar tills data har tagits emot. 
+	while (!(UCSR0A & (1 << RXC0)));
+	return UDR0;
+}
+
+void uart_echo()
+{
+	//Kallar på uart_getchar() och stoppar det returnerade värdet i en variabel. Kallar därefter på uart_putchar() med variabeln som argument. 
+	char c = uart_getchar();
+	uart_putchar(c);
 }
 
 

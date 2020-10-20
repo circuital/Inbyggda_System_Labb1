@@ -20,9 +20,14 @@ void main (void)
 	//	_delay_ms(500);
 	//}
 
+	//while (true)
+	//{
+	//	uart_putstr("Elvira Granqvist\r");
+	//	_delay_ms(500);
+	//}
+
 	while (true)
 	{
-		uart_putstr("Elvira Granqvist\r");
-		_delay_ms(500);
+		uart_echo();
 	}
 }
