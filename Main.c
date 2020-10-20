@@ -26,8 +26,13 @@ void main (void)
 	//	_delay_ms(500);
 	//}
 
+	//while (true)
+	//{
+	//	uart_echo();
+	//}
+
 	while (true)
 	{
-		uart_echo();
+		uart_led();
 	}
 }

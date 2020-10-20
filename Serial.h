@@ -13,4 +13,6 @@ char uart_getchar(void);
 
 void uart_echo(void);
 
+void uart_led(void);
+
 #endif

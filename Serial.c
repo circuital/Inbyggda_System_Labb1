@@ -76,4 +76,38 @@ void uart_echo()
 	uart_putchar(c);
 }
 
+void uart_led()
+{
+	DDRB |= (1 << PB0);
+
+	char c;
+	char s[10];
+	int i = 0;
+
+	//Loopar över de inkommande tecknen och kallar på uart_putchar() med tecknet som argument så länge det är skilt från \r samt lägger tecknet i en sträng. 
+	while ((c = uart_getchar()) != '\r')
+	{
+		uart_putchar(c);
+		s[i] = c;
+		i++;
+	}
+	uart_putchar('\r');
+
+	//Lägger till \r och \n i strängen samt noll-terminerar den för att kunna använda strcmp().
+	s[i] = '\r';
+	s[i + 1] = '\n';
+	s[i + 2] = '\0';
+
+	//Sätter bit PB0 i port B till hög om strängen är lika med "ON\r\n".
+	if (strcmp(s, "ON\r\n") == 0)
+	{
+		PORTB |= (1 << PB0);
+	}
+	//Sätter bit PB0 i port B till låg om strängen är lika med "OFF\r\n".
+	else if (strcmp(s, "OFF\r\n") == 0)
+	{
+		PORTB &= ~(1 << PB0);
+	}
+}
+
 
