@@ -7,8 +7,22 @@
 
 void main (void) 
 {
+	//while (true)
+	//{
+	//	blink_led();
+	//}
+
+	uart_init();
+
+	//while (true)
+	//{
+	//	uart_putchar('E');
+	//	_delay_ms(500);
+	//}
+
 	while (true)
 	{
-		blink_led();
+		uart_putstr("Elvira Granqvist\r");
+		_delay_ms(500);
 	}
 }
